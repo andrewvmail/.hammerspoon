@@ -25,4 +25,14 @@ hyper:bind({}, "l", function()
   hyper.triggered = true
 end)
 
+hyper:bind({}, "t", function() 
+  hs.application.launchOrFocus("Terminal")
+  hyper.triggered = true 
+end)
+
+hyper:bind({}, "f", function() 
+  hs.application.launchOrFocus("Finder")
+  hyper.triggered = true 
+end)
+
 hs.alert.show("config loaded")
