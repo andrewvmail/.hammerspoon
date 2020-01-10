@@ -1,6 +1,7 @@
 require("ctrlTap")
 
 hyper = hs.hotkey.modal.new({}, 'F17')
+
 function enterHyperMode()
   hyper.triggered = false
   hyper:enter()
@@ -13,6 +14,7 @@ function exitHyperMode()
   end
 end
 
+-- the actual key mapped to left ctrl
 f18 = hs.hotkey.bind({}, 'F18', enterHyperMode, exitHyperMode)
 
 hyper:bind({}, '0', function()
@@ -30,9 +32,30 @@ hyper:bind({}, "t", function()
   hyper.triggered = true 
 end)
 
+hyper:bind({}, "g", function() 
+  hs.application.launchOrFocus("Gitup")
+  hyper.triggered = true 
+end)
+
+hyper:bind({}, "s", function() 
+  hs.application.launchOrFocus("Sublime Text")
+  hyper.triggered = true 
+end)
+
 hyper:bind({}, "f", function() 
   hs.application.launchOrFocus("Finder")
   hyper.triggered = true 
 end)
+
+hyper:bind({}, "`", function() 
+  hs.eventtap.keyStroke({"ctrl", "shift"}, "f2")
+  hyper.triggered = true 
+end)
+
+
+-- hyper:bind({}, "esc", function() 
+--   hs.eventtap.keyStroke({}, 'ESCAPE')
+--   hyper.triggered = true 
+-- end)
 
 hs.alert.show("config loaded")
