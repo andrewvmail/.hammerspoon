@@ -32,6 +32,16 @@ hyper:bind({}, "t", function()
   hyper.triggered = true 
 end)
 
+hyper:bind({}, "w", function() 
+  hs.application.launchOrFocus("Webstorm")
+  hyper.triggered = true 
+end)
+
+hyper:bind({}, "c", function() 
+  hs.application.launchOrFocus("Google Chrome")
+  hyper.triggered = true 
+end)
+
 hyper:bind({}, "g", function() 
   hs.application.launchOrFocus("Gitup")
   hyper.triggered = true 
