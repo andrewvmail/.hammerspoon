@@ -1,6 +1,9 @@
+hs.window.animationDuration = 0
+
 require("ctrlTap")
 
 hyper = hs.hotkey.modal.new({}, 'F17')
+hyper2 = hs.hotkey.modal.new({}, 'F14')
 
 function enterHyperMode()
   hyper.triggered = false
@@ -13,9 +16,27 @@ function exitHyperMode()
     hs.eventtap.keyStroke({}, 'ESCAPE')
   end
 end
+function enterHyperMode2()
+  hyper2.triggered = false
+  hyper2:enter()
+end
 
--- the actual key mapped to left ctrl
-f18 = hs.hotkey.bind({}, 'F18', enterHyperMode, exitHyperMode)
+function exitHyperMode2()
+  hyper2:exit()
+  if not hyper2.triggered then
+    hs.eventtap.keyStroke({}, 'ESCAPE')
+  end
+end
+-- the actual key 
+f18 = hs.hotkey.bind({}, 'F18', enterHyperMode, exitHyperMode) -- left ctrl
+f13 = hs.hotkey.bind({}, 'F13', enterHyperMode2, exitHyperMode2) -- right cmd
+
+hyper2:bind({}, 'h', function()
+  hyper2.triggered = true
+  local shell_command = "open " .. "~/.hammerspoon" 
+  hs.execute(shell_command)
+  hs.alert.show("test")
+end)
 
 hyper:bind({}, '0', function()
   hs.reload()
