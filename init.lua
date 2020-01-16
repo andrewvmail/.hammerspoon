@@ -2,6 +2,19 @@ hs.window.animationDuration = 0
 
 require("ctrlTap")
 
+vim = hs.loadSpoon('VimMode')
+
+
+hs.hotkey.bind({'ctrl'}, ';', function()
+  vim:enter()
+end)
+
+vim:disableForApp('Code')
+vim:disableForApp('iTerm')
+vim:disableForApp('MacVim')
+vim:disableForApp('Terminal')
+vim:disableForApp('Chrome')
+
 hyper = hs.hotkey.modal.new({}, 'F17')
 hyper2 = hs.hotkey.modal.new({}, 'F14')
 
@@ -36,6 +49,15 @@ hyper2:bind({}, 'h', function()
   local shell_command = "open " .. "~/.hammerspoon" 
   hs.execute(shell_command)
   hs.alert.show("test")
+end)
+
+
+hyper2:bind({}, 'p', function()
+  hyper2.triggered = true
+  -- local shell_command = "open " .. "~/.hammerspoon" 
+  -- hs.execute(shell_command)
+  hs.alert.show("prettier")
+  
 end)
 
 hyper:bind({}, '0', function()
