@@ -5,9 +5,13 @@ require("ctrlTap")
 vim = hs.loadSpoon('VimMode')
 
 
-hs.hotkey.bind({'ctrl'}, ';', function()
+hs.hotkey.bind({'ctrl'}, '\\', function()
   vim:enter()
 end)
+
+-- hs.hotkey.bind({'ctrl'}, 'c', function()
+  -- vim:exit()
+-- end)
 
 vim:disableForApp('Code')
 vim:disableForApp('iTerm')
