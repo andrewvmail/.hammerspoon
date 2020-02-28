@@ -76,6 +76,7 @@ end)
 
 hyper:bind({}, "t", function() 
   hs.application.launchOrFocus("Terminal")
+  hs.application.launchOrFocus("iTerm")
   hyper.triggered = true 
 end)
 
@@ -84,8 +85,32 @@ hyper:bind({}, "w", function()
   hyper.triggered = true 
 end)
 
+hyper:bind({}, "i", function() 
+  hs.application.launchOrFocus("IntelliJ Idea")
+  hyper.triggered = true 
+end)
+
+hyper:bind({}, "l", function() 
+  hs.application.launchOrFocus("Trello")
+  hyper.triggered = true 
+end)
+
+hyper:bind({}, "l", function() 
+  hs.application.launchOrFocus("Trello")
+  hyper.triggered = true 
+end)
+
+hyper:bind({}, "m", function() 
+  hs.application.launchOrFocus("WhatsApp")
+  hyper.triggered = true 
+end)
 hyper:bind({}, "c", function() 
   hs.application.launchOrFocus("Google Chrome")
+  hyper.triggered = true 
+end)
+
+hyper:bind({}, "l", function() 
+  hs.application.launchOrFocus("Trello")
   hyper.triggered = true 
 end)
 
@@ -109,6 +134,11 @@ hyper:bind({}, "`", function()
   hyper.triggered = true 
 end)
 
+-- open console
+hyper:bind({}, "`", function() 
+  hs.application.find("DevTools"):focus()
+  hyper.triggered = true 
+end)
 
 -- hyper:bind({}, "esc", function() 
 --   hs.eventtap.keyStroke({}, 'ESCAPE')
