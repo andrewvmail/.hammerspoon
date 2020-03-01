@@ -94,9 +94,7 @@ hyper:bind({}, "l", function()
   hs.application.launchOrFocus("Trello")
   hyper.triggered = true 
 end)
-
-hyper:bind({}, "l", function() 
-  hs.application.launchOrFocus("Trello")
+ hyper:bind({}, "l", function() hs.application.launchOrFocus("Trello")
   hyper.triggered = true 
 end)
 
@@ -104,8 +102,14 @@ hyper:bind({}, "m", function()
   hs.application.launchOrFocus("WhatsApp")
   hyper.triggered = true 
 end)
+
 hyper:bind({}, "c", function() 
   hs.application.launchOrFocus("Google Chrome")
+  hyper.triggered = true 
+end)
+
+hyper:bind({}, "b", function() 
+  hs.application.launchOrFocus("Brave")
   hyper.triggered = true 
 end)
 
