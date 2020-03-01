@@ -75,7 +75,6 @@ hyper:bind({}, "l", function()
 end)
 
 hyper:bind({}, "t", function() 
-  hs.application.launchOrFocus("Terminal")
   hs.application.launchOrFocus("iTerm")
   hyper.triggered = true 
 end)
