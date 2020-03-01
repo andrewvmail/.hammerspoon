@@ -109,7 +109,7 @@ hyper:bind({}, "c", function()
 end)
 
 hyper:bind({}, "b", function() 
-  hs.application.launchOrFocus("Brave")
+  hs.application.launchOrFocus("Brave Browser")
   hyper.triggered = true 
 end)
 
