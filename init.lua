@@ -145,6 +145,7 @@ end)
 --   hyper.triggered = true 
 -- end)
 
+-- https://www.reddit.com/r/apple/comments/5tnejo/is_there_a_way_to_simulate_a_numpad_on_a_macbook/
 k = hs.hotkey.modal.new('ctrl-shift', 'n')
 function k:entered() hs.alert'Virtual Numpad' end
 function k:exited() hs.alert'Exit Virtual Numpad' end
