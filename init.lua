@@ -55,13 +55,13 @@ hyper2:bind({}, 'h', function()
   hs.alert.show("test")
 end)
 
-
-hyper2:bind({}, 'p', function()
-  hyper2.triggered = true
-  -- local shell_command = "open " .. "~/.hammerspoon" 
-  -- hs.execute(shell_command)
-  hs.alert.show("prettier")
-  
+-- open the first window chromed opened
+hyper:bind({}, "j", function() 
+  chrome = hs.application.find("Google Chrome")
+  hs.tabs.enableForApp(chrome)
+  hs.tabs.focusTab(chrome, 1) 
+  hyper.triggered = true
+  hs.alert.show("Gmail")
 end)
 
 hyper:bind({}, '0', function()
