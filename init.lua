@@ -1,9 +1,7 @@
-hs.window.animationDuration = 0
-
-require("ctrlTap")
+require "preload"
+require "ctrlTap"
 
 vim = hs.loadSpoon('VimMode')
-
 
 hs.hotkey.bind({'ctrl'}, '\\', function()
   vim:enter()
@@ -19,8 +17,13 @@ vim:disableForApp('MacVim')
 vim:disableForApp('Terminal')
 vim:disableForApp('Chrome')
 
-hyper = hs.hotkey.modal.new({}, 'F17')
-hyper2 = hs.hotkey.modal.new({}, 'F14')
+-- set this with karabiner
+hyper = hs.hotkey.modal.new({}, 'F17') -- left ctrl
+hyper2 = hs.hotkey.modal.new({}, 'F14') -- right cmd
+
+hyper:bind({}, "h", hs.toggleConsole)
+hyper:bind({}, '.', hs.hints.windowHints)
+hyper:bind({}, ",", function() hs.urlevent.openURLWithBundle("file://"..hs.configdir, hs.settings.get("editorBundleID")) end)
 
 function enterHyperMode()
   hyper.triggered = false
@@ -47,6 +50,8 @@ end
 -- the actual key 
 f18 = hs.hotkey.bind({}, 'F18', enterHyperMode, exitHyperMode) -- left ctrl
 f13 = hs.hotkey.bind({}, 'F13', enterHyperMode2, exitHyperMode2) -- right cmd
+
+require "window"
 
 hyper2:bind({}, 'h', function()
   hyper2.triggered = true
@@ -200,7 +205,4 @@ remap({'ctrl'}, 'l', pressFn('right'))
 
 
 
-hs.alert.show("config loaded")
-
-
-
+hs.alert.show("config loaded  👍")
