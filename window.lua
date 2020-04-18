@@ -8,6 +8,12 @@ local arrowMap = {
   Left = { half = { 0, 0,.5, 1}, movement = {-20, 0}, complement = "Down", resize = "Thinner" },
   Right = { half = {.5, 0,.5, 1}, movement = { 20, 0}, complement = "Up", resize = "Wider" },
 }
+local arrowMapHomeRow = {
+  Up = "i",
+  Down = "k",
+  Left = "j",
+  Right = "l",
+}
 
 -- compose screen quadrants from halves
 local function quadrant(t1, t2)
@@ -29,23 +35,23 @@ hyperEsc:bind({}, "space", rect({1/8, 1/8, 3/4, 3/4}), nil, rect({0, 0, 1, 1}))
 -- arrow-based window movement/resize operations
 hs.fnutils.each({"Left", "Right", "Up", "Down"}, function(arrow)
 
-    hyperEsc:bind({}, arrow, -- set to screen halves; hold for quadrants
+    hyperEsc:bind({}, arrowMapHomeRow[arrow], -- set to screen halves; hold for quadrants
       rect(arrowMap[arrow].half),
       nil,
       rect(quadrant(arrowMap[arrow].half, arrowMap[arrowMap[arrow].complement].half))
     )
 
-    hyperEsc:bind({"ctrl", "cmd"}, arrow, -- move windows incrementally
+    hyperEsc:bind({"ctrl", "cmd"}, arrowMapHomeRow[arrow], -- move windows incrementally
       rect(arrowMap[arrow].movement),
       nil,
       rect(arrowMap[arrow].movement)
     )
 
-    hyperEsc:bind({"ctrl", "alt"}, arrow, -- move windows by grid increments
+    hyperEsc:bind({"ctrl", "alt"}, arrowMapHomeRow[arrow], -- move windows by grid increments
       function() undo:push(); hs.grid['pushWindow'..arrow](fw()) end
     )
 
-    hyperEsc:bind({"ctrl", "alt", "shift"}, arrow, -- resize windows by grid increments
+    hyperEsc:bind({"ctrl", "alt", "shift"}, arrowMapHomeRow[arrow], -- resize windows by grid increments
       function() undo:push(); hs.grid['resizeWindow'..arrowMap[arrow].resize](fw()) end
     )
 
