@@ -17,10 +17,9 @@ vim:disableForApp('MacVim')
 vim:disableForApp('Terminal')
 vim:disableForApp('Chrome')
 
-
--- some random keys thats rarely used
-hyper = hs.hotkey.modal.new({}, 'F17') 
-hyper2 = hs.hotkey.modal.new({}, 'F14')
+-- set this with karabiner
+hyper = hs.hotkey.modal.new({}, 'F17') -- left ctrl
+hyper2 = hs.hotkey.modal.new({}, 'F14') -- right cmd
 hyperEsc = hs.hotkey.modal.new({}, 'F5')
 
 hyper:bind({}, "h", hs.toggleConsole)

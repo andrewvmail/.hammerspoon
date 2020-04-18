@@ -41,19 +41,19 @@ hs.fnutils.each({"Left", "Right", "Up", "Down"}, function(arrow)
       rect(quadrant(arrowMap[arrow].half, arrowMap[arrowMap[arrow].complement].half))
     )
 
-    hyperEsc:bind({"ctrl", "cmd"}, arrowMapHomeRow[arrow], -- move windows incrementally
+    hyperEsc:bind({"ctrl"}, arrowMapHomeRow[arrow], -- move windows incrementally
       rect(arrowMap[arrow].movement),
       nil,
       rect(arrowMap[arrow].movement)
     )
 
-    hyperEsc:bind({"ctrl", "alt"}, arrowMapHomeRow[arrow], -- move windows by grid increments
+    hyperEsc:bind({"alt"}, arrowMapHomeRow[arrow], -- move windows by grid increments
       function() undo:push(); hs.grid['pushWindow'..arrow](fw()) end
     )
 
-    hyperEsc:bind({"ctrl", "alt", "shift"}, arrowMapHomeRow[arrow], -- resize windows by grid increments
+    hyperEsc:bind({"command"}, arrowMapHomeRow[arrow], -- resize windows by grid increments
       function() undo:push(); hs.grid['resizeWindow'..arrowMap[arrow].resize](fw()) end
-    )
+    )    
 
   end)
 
