@@ -61,13 +61,13 @@ hyper2:bind({}, 'h', function()
 end)
 
 -- open the first window chromed opened
-hyper:bind({}, "j", function() 
-  chrome = hs.application.find("Google Chrome")
-  hs.tabs.enableForApp(chrome)
-  hs.tabs.focusTab(chrome, 1) 
-  hyper.triggered = true
-  hs.alert.show("Gmail")
-end)
+-- hyper:bind({}, "j", function() 
+--   chrome = hs.application.find("Google Chrome")
+--   hs.tabs.enableForApp(chrome)
+--   hs.tabs.focusTab(chrome, 1) 
+--   hyper.triggered = true
+--   hs.alert.show("Gmail")
+-- end)
 
 hyper:bind({}, '0', function()
   hs.reload()
