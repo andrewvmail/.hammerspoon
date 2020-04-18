@@ -24,28 +24,28 @@ local function rect(rect)
 end
 
 -- center and enlarge current window; hold to maximize
-hyper:bind({}, "space", rect({1/8, 1/8, 3/4, 3/4}), nil, rect({0, 0, 1, 1}))
+hyperEsc:bind({}, "space", rect({1/8, 1/8, 3/4, 3/4}), nil, rect({0, 0, 1, 1}))
 
 -- arrow-based window movement/resize operations
 hs.fnutils.each({"Left", "Right", "Up", "Down"}, function(arrow)
 
-    hyper:bind({}, arrow, -- set to screen halves; hold for quadrants
+    hyperEsc:bind({}, arrow, -- set to screen halves; hold for quadrants
       rect(arrowMap[arrow].half),
       nil,
       rect(quadrant(arrowMap[arrow].half, arrowMap[arrowMap[arrow].complement].half))
     )
 
-    hyper:bind({"ctrl", "cmd"}, arrow, -- move windows incrementally
+    hyperEsc:bind({"ctrl", "cmd"}, arrow, -- move windows incrementally
       rect(arrowMap[arrow].movement),
       nil,
       rect(arrowMap[arrow].movement)
     )
 
-    hyper:bind({"ctrl", "alt"}, arrow, -- move windows by grid increments
+    hyperEsc:bind({"ctrl", "alt"}, arrow, -- move windows by grid increments
       function() undo:push(); hs.grid['pushWindow'..arrow](fw()) end
     )
 
-    hyper:bind({"ctrl", "alt", "shift"}, arrow, -- resize windows by grid increments
+    hyperEsc:bind({"ctrl", "alt", "shift"}, arrow, -- resize windows by grid increments
       function() undo:push(); hs.grid['resizeWindow'..arrowMap[arrow].resize](fw()) end
     )
 
@@ -54,7 +54,7 @@ hs.fnutils.each({"Left", "Right", "Up", "Down"}, function(arrow)
 -- window grid configuration
 hs.grid.setGrid("6x4")
 hs.grid.setMargins({0, 0})
-hyper:bind({}, '/', function()
+hyperEsc:bind({}, '/', function()
     local gridSize = hs.grid.getGrid()
     hs.grid.setGrid("3x3")
     hs.grid.show(function() hs.grid.setGrid(gridSize) end)
@@ -78,4 +78,4 @@ function undo:pop()
   end
 end
 
-hyper:bind({"ctrl", "alt"}, "z", function() undo:pop() end)
+hyperEsc:bind({"ctrl", "alt"}, "z", function() undo:pop() end)

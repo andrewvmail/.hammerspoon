@@ -17,39 +17,42 @@ vim:disableForApp('MacVim')
 vim:disableForApp('Terminal')
 vim:disableForApp('Chrome')
 
--- set this with karabiner
-hyper = hs.hotkey.modal.new({}, 'F17') -- left ctrl
-hyper2 = hs.hotkey.modal.new({}, 'F14') -- right cmd
+
+-- some random keys thats rarely used
+hyper = hs.hotkey.modal.new({}, 'F17') 
+hyper2 = hs.hotkey.modal.new({}, 'F14')
+hyperEsc = hs.hotkey.modal.new({}, 'F5')
 
 hyper:bind({}, "h", hs.toggleConsole)
 hyper:bind({}, '.', hs.hints.windowHints)
 hyper:bind({}, ",", function() hs.urlevent.openURLWithBundle("file://"..hs.configdir, hs.settings.get("editorBundleID")) end)
 
-function enterHyperMode()
-  hyper.triggered = false
-  hyper:enter()
+
+function enterHyperModeFactory(hyperKey) 
+  local enterHyperMode = function ()
+    hyperKey.triggered = false
+    hyperKey:enter()
+  end
+
+  return enterHyperMode
 end
 
-function exitHyperMode()
-  hyper:exit()
-  if not hyper.triggered then
-    hs.eventtap.keyStroke({}, 'ESCAPE')
+
+function exitHyperModeFactory(hyperKey)
+  local exitHyperMode = function ()
+    hyperKey:exit()
+    if not hyperKey.triggered then
+      hs.eventtap.keyStroke({}, 'ESCAPE')
+    end
   end
-end
-function enterHyperMode2()
-  hyper2.triggered = false
-  hyper2:enter()
+  return exitHyperMode
 end
 
-function exitHyperMode2()
-  hyper2:exit()
-  if not hyper2.triggered then
-    hs.eventtap.keyStroke({}, 'ESCAPE')
-  end
-end
--- the actual key 
-f18 = hs.hotkey.bind({}, 'F18', enterHyperMode, exitHyperMode) -- left ctrl
-f13 = hs.hotkey.bind({}, 'F13', enterHyperMode2, exitHyperMode2) -- right cmd
+-- V the actual key -------- V -- that should be mapped in karabiner
+leftCtrl = hs.hotkey.bind({}, 'F18', enterHyperModeFactory(hyper), exitHyperModeFactory(hyper)) -- left ctrl
+rightCmd = hs.hotkey.bind({}, 'F13', enterHyperModeFactory(hyper2), exitHyperModeFactory(hyper2)) -- right cmd into
+fesc = hs.hotkey.bind({}, 'F20', enterHyperModeFactory(hyperEsc), exitHyperModeFactory(hyperEsc)) -- turning esc into f20
+-- ^ the actual key -------- ^ -- that should be mapped in karabiner 
 
 require "window"
 
@@ -181,7 +184,7 @@ hs.fnutils.each({
 
 
 
-
+          
 -- https://github.com/kkamdooong/hammerspoon-control-hjkl-to-arrow/blob/master/init.lua
 
 local function pressFn(mods, key)
