@@ -23,7 +23,7 @@ hyper2 = hs.hotkey.modal.new({}, 'F14') -- right cmd
 hyperEsc = hs.hotkey.modal.new({}, 'F5')
 
 hyper:bind({}, "h", hs.toggleConsole)
-hyper:bind({}, '.', hs.hints.windowHints)
+hyper:bind({}, 'j', hs.hints.windowHints)
 hyper:bind({}, ",", function() hs.urlevent.openURLWithBundle("file://"..hs.configdir, hs.settings.get("editorBundleID")) end)
 
 
@@ -59,7 +59,6 @@ hyper2:bind({}, 'h', function()
   hyper2.triggered = true
   local shell_command = "open " .. "~/.hammerspoon" 
   hs.execute(shell_command)
-  hs.alert.show("test")
 end)
 
 -- open the first window chromed opened
@@ -126,15 +125,6 @@ hyper:bind({}, "x", function()
   hs.application.launchOrFocus("Xcode")
   hyper.triggered = true 
 end)
-
-
-hyper:bind({}, "`", function() 
-  hs.eventtap.keyStroke({"ctrl", "shift"}, "f2")
-  hyper.triggered = true 
-end)
-
-
-
 -- open console
 hyper:bind({}, "`", function() 
   hs.application.find("DevTools"):focus()
