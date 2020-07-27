@@ -3,6 +3,10 @@ require "ctrlTap"
 
 vim = hs.loadSpoon('VimMode')
 
+local vimouse = require('vimouse')
+vimouse('cmd', 'm')
+
+
 hs.hotkey.bind({'ctrl'}, '\\', function()
   vim:enter()
 end)
