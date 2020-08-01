@@ -6,6 +6,9 @@ vim = hs.loadSpoon('VimMode')
 local vimouse = require('vimouse')
 vimouse('cmd', 'm')
 
+local maw = require('maw')
+maw('cmd', 'b')
+
 
 hs.hotkey.bind({'ctrl'}, '\\', function()
   vim:enter()
