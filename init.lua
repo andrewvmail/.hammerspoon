@@ -7,7 +7,7 @@ local vimouse = require('vimouse')
 vimouse('cmd', 'm')
 
 local maw = require('maw')
-maw('cmd', 'b')
+maw('cmd', 'j')
 
 
 hs.hotkey.bind({'ctrl'}, '\\', function()
