@@ -9,9 +9,9 @@ local arrowMap = {
   Right = { half = {.5, 0,.5, 1}, movement = { 20, 0}, complement = "Up", resize = "Wider" },
 }
 local arrowMapHomeRow = {
-  Up = "i",
-  Down = "k",
-  Left = "j",
+  Up = "k",
+  Down = "j",
+  Left = "h",
   Right = "l",
 }
 
