@@ -1,5 +1,10 @@
 -- WIP
+local hsDir = os.getenv("HOME") .. "/.hammerspoon"
 local desktop = os.getenv("HOME") .. "/Desktop"
+local a = nil
+local hintChars = "ASDFJKL"
+local hintKeystrokeQueue
+local linkHintsModeActivated
 
 function dump(o)
     if type(o) == 'table' then
@@ -21,43 +26,97 @@ function get_center(x1,y1,x2,y2)
     return x, y
 end
 
+function numToString(num)
+    local base = string.len(hintChars)
+    local hintString = {};
+    local remainder = 0;
+    while (num > 0) do
+        remainder = num % base;
+        table.insert(hintString, string.sub(hintChars, remainder, remainder + 1) );
+        num = num - remainder;
+        num = num / math.floor(base);
+    end 
+    print(dump(hintString))
+    return table.concat(hintString, ""); 
+end
 
 function render_text(canvas, text, x, y)
+    print(x, y)
     canvas:appendElements(
     {
-        frame = {h = 25, w = 25, x = x, y = y},
+        frame = {h = 1, w = 2, x = x, y = y},
         text = hs.styledtext.new(
             text, {
-                font = {name = ".AppleSystemUIFont", size = 18},
+                font = {size = 13},
                 backgroundColor = hs.drawing.color.hammerspoon.osx_yellow,
-                paragraphStyle = {alignment = "top"},
-                color = {black = 1.0, alpha = 1.0 }}), 
+                paragraphStyle = {
+                maximumLineHeight = 13, alignment = "top"},
+                color = {black = 1.0, alpha = 1 }}), 
         type = "text",
     }  
     ):show()
 end
 
+function listDiagCoordsToTable(listDiagCoords) 
+    local listDiagCoordsTable = {}
+    local count = 0
+    for word in string.gmatch(listDiagCoords, '([^:]+)') do
+        count = count + 1
+        x, y = word:match("([^,]+),([^,]+)")
+        -- print('x', x,'y', y)
+        -- print(count)
+        listDiagCoordsTable[count] = {x = x, y = y} 
+    end
 
-function feed_snapshot_to_opencv(shotPath)
+    return listDiagCoordsTable
+end
+
+function feed_snapshot_to_opencv(shotPath, canvas)
     -- local back_task = hs.task.new('/usr/local/bin/python3', task_callback, stream_callback, {'/Volumes/Jeff/bin/backup_phone'})
     hs.task.new(
         '/usr/local/bin/python3',
         function(code,out,err) 
-            print('111111')
-            print(dump(code))
-            print(dump(out))
-            print(dump(err))
+            -- print('111111')
+            -- print(dump(code))
+            -- print(dump(out))
+            -- print(dump(err))
             return true
         end,
         function(code,out,err)
-            print('----')
-            print(dump(code))
-            print(dump(out))
-            print(dump(err))
+            -- print('----')
+            -- print(dump(code))
+            -- print(dump(out))
+            -- listDiagCoords = out
+            -- print("listDiagCoords")
+            -- print(listDiagCoords)
+            -- print(type(listDiagCoords))
+
+
+            listDiagCoords = listDiagCoordsToTable(out)
+            print('list', dump(listDiagCoords))
+
+
+
+            for k, v in pairs(listDiagCoords) do
+              --print(k, v['x'], v['y'], v[3])
+              render_text(canvas,numToString(k), tonumber(v['x']), tonumber(v['y']))
+              print("k", k, type(k1))
+              print(numToString(k))
+              -- print(numToString(2))
+              -- print(numToString(3))
+              -- print(numToString(4))
+              -- print(numToString(5))
+            end
+
+
+
+            -- print(dump(err))
             return true
         end,
-        {desktop ..'/opencv-mser/mser.py', shotPath, shotPath}
+        {hsDir ..'/mser.py', shotPath, shotPath}
         ):start()
+
+    return listDiagCoords
 end
 
 screens = hs.screen.allScreens()
@@ -74,7 +133,7 @@ height = screen["h"]
 
 tap = nil
 exitTap = nil
-local a = nil
+
 
 
 exitTap = hs.eventtap.new({eventTypes.keyDown, eventTypes.keyUp}, function(event)
@@ -101,7 +160,19 @@ tap = hs.eventtap.new({eventTypes.keyDown, eventTypes.keyUp}, function(event)
         local shotPath = desktop .. "/test.jpg"
         local image = screens[1]:shotAsJPG(shotPath, {x=0,y=0,w=width/10,h=height/4})
 
-        feed_snapshot_to_opencv(shotPath)
+     
+        feed_snapshot_to_opencv(shotPath, a)
+
+
+
+
+
+
+
+
+
+
+
         --     imageOnScreen = hs.loadSpoon('FadeLogo'):start(0.5, image)
         --     exitTap:start()
         -- end
@@ -119,6 +190,7 @@ tap = hs.eventtap.new({eventTypes.keyDown, eventTypes.keyUp}, function(event)
                 -- imageOnScreen:hide()
                 tap:stop()
                 a:hide()
+                a:delete()
                 a = nil
                 exitTap:stop()
             end
@@ -150,7 +222,7 @@ hs.hotkey.bind(tmod, tkey, nil, function(event)
     a = c.new{x = 0, y = 0, h = height, w = width}:appendElements({
         -- first we start with a rectangle that covers the full canvas
         action = "fill", padding = 0, type = "rectangle", withShadow = true,
-        fillColor = {alpha = 0.3, black = 1.0},
+        fillColor = {alpha = 0, black = 1.0},
     }
 
     ,
@@ -676,10 +748,10 @@ local x, y = get_center(54,62,5,16)
 print("111111111111111111111111111111111")
 print("111111111111111111111111111111111")
 print(x,y)
-render_text(a,"JJ", x, y)
+-- render_text(a,"JJ", x, y)
 print("111111111111111111111111111111111")
 print("111111111111111111111111111111111")
-
+print(listDiagCoords, 'listDiagCoords')
 tap:start()
 
 -- hs.alert('maw on')
