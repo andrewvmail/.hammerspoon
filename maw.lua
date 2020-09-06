@@ -2,7 +2,7 @@
 local hsDir = os.getenv("HOME") .. "/.hammerspoon"
 local desktop = os.getenv("HOME") .. "/Desktop"
 local a = nil
-local hintChars = "QWERASDF"
+local hintChars = "QWERASDFTYGZXCVBN"
 local hintKeystrokeQueue
 local linkHintsModeActivated
 local spacing = 5 -- viewport h / w
@@ -44,8 +44,7 @@ function buildHintSrings(linkCount)
         offset = offset + 1
         local hint = hints[offset]
         for i = 0, string.len(hintChars) do
-            print(i)
-            table.insert(hints, string.sub(hintChars, i, i + 1) .. (hint or ""));
+            table.insert(hints, string.sub(hintChars, i, i) .. (hint or ""));
         end
     end
     
@@ -73,14 +72,21 @@ function numToString(num)
 end
 
 function renderHints(canvas, grid)
-    count = 0
+    count = 1
+    for k, v in pairs(grid) do
+        if(v["x"] ~= nil and v["y"] ~= nil) then
+            count = count + 1
+        end
+    end
+    hints = buildHintSrings(count)
+    count = 1
     for k, v in pairs(grid) do
         if(v["x"] ~= nil and v["y"] ~= nil) then
             x = v["x"]
             y = v["y"]
             opts = {
                 frame = {h = 200, w = 200, x = x, y = y},
-                text = hs.styledtext.new(numToString(count), hintOpt),
+                text = hs.styledtext.new(hints[count], hintOpt),
                 type = "text"
             }
             canvas:appendElements(opts):show()
