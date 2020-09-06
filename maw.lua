@@ -2,7 +2,7 @@
 local hsDir = os.getenv("HOME") .. "/.hammerspoon"
 local desktop = os.getenv("HOME") .. "/Desktop"
 local a = nil
-local hintChars = "ASDFJKL"
+local hintChars = "QWERASDF"
 local hintKeystrokeQueue
 local linkHintsModeActivated
 local spacing = 5 -- viewport h / w
@@ -35,34 +35,56 @@ function get_center(x1, y1, x2, y2)
     return x, y
 end
 
+-- // Refer to:
+-- // https://github.com/philc/vimium/blob/881a6fdc3644f55fc02ad56454203f654cc76618/content_scripts/link_hints.coffee#L434
+function buildHintSrings(linkCount)
+    hints = {}
+    offset = 0
+    while #hints - offset < linkCount or #hints == 1 do
+        offset = offset + 1
+        local hint = hints[offset]
+        for i = 0, string.len(hintChars) do
+            print(i)
+            table.insert(hints, string.sub(hintChars, i, i + 1) .. (hint or ""));
+        end
+    end
+    
+    local newHints = {}
+    for key, value in pairs({table.unpack(hints, offset, offset + linkCount)}) do
+        newHints[key] = value
+    end
+    
+    return newHints
+end
+
 function numToString(num)
+    
     local base = string.len(hintChars)
     local hintString = {};
     local remainder = 0;
     while (num > 0) do
-        remainder = num % base;
+        remainder = math.floor(num % base);
         table.insert(hintString, string.sub(hintChars, remainder, remainder + 1));
-        num = num - remainder;
-        num = num / math.floor(base);
+        -- num = num - remainder;
+        num = math.floor(num / base);
     end
     -- print(dump(hintString))
     return table.concat(hintString, "");
 end
 
 function renderHints(canvas, grid)
-    -- print(dump(grid))
     count = 0
     for k, v in pairs(grid) do
-        count = count + 1
         if(v["x"] ~= nil and v["y"] ~= nil) then
             x = v["x"]
             y = v["y"]
             opts = {
                 frame = {h = 200, w = 200, x = x, y = y},
-                text = hs.styledtext.new("Momo", hintOpt),
+                text = hs.styledtext.new(numToString(count), hintOpt),
                 type = "text"
             }
             canvas:appendElements(opts):show()
+            count = count + 1
         end
     end
 end
