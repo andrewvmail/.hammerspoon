@@ -1,5 +1,7 @@
 -- WIP
-local hsDir = os.getenv("HOME") .. "/.hammerspoon"
+local keycodes = hs.keycodes.map
+local eventTypes = hs.eventtap.event.types
+local eventPropTypes = hs.eventtap.event.properties local hsDir = os.getenv("HOME") .. "/.hammerspoon"
 local desktop = os.getenv("HOME") .. "/Desktop"
 local a = nil
 local hintChars = "QWERASDFTYGZXCVBN"
@@ -15,6 +17,8 @@ local hintOpt =
     font = {size = 12},
     backgroundColor = hs.drawing.color.hammerspoon.osx_yellow,
 }
+local keyPressedStack = {}
+local hintsToCoords = {}
 
 function dump(o)
     if type(o) == 'table' then
@@ -33,6 +37,13 @@ function get_center(x1, y1, x2, y2)
     y = (y1 + y2) / 2
     x = (x1 + x2) / 2
     return x, y
+end
+
+function checkKeysInHintChars(char, hintChars)
+    if string.match(hintChars, string.upper(char)) then
+        return true
+    end
+    return false
 end
 
 -- // Refer to:
@@ -90,6 +101,9 @@ function renderHints(canvas, grid)
                 type = "text"
             }
             canvas:appendElements(opts):show()
+            hintsToCoords[hints[count]] = {
+                x = x, y = y
+            }
             count = count + 1
         end
     end
@@ -117,7 +131,6 @@ return function(tmod, tkey)
     
     local eventTypes = hs.eventtap.event.types
     local eventPropTypes = hs.eventtap.event.properties
-    local keycodes = hs.keycodes.map
     screen = screens[1]:currentMode()
     width = screen["w"]
     height = screen["h"]
@@ -126,12 +139,15 @@ return function(tmod, tkey)
     exitTap = nil
     
     tap = hs.eventtap.new({eventTypes.keyDown, eventTypes.keyUp}, function(event)
-        -- print("tap")
+        -- print("tap", event.type)
         local code = event:getKeyCode()
+        local char = event:getCharacters()
+        local keyDirection = event:getType()
         local is_tapkey = code == keycodes[tkey]
         
         if code == keycodes['escape'] or is_tapkey then
             -- imageOnScreen:hide()
+            keyPressedStack = {}
             tap:stop()
             a:hide()
             a:delete()
@@ -157,6 +173,50 @@ return function(tmod, tkey)
             -- print("j tapped")
             offsetY = offsetY + increment
             a:transformation(hs.canvas.matrix.translate(offsetX, offsetY))
+        elseif(keyDirection == eventTypes.keyUp and checkKeysInHintChars(char, hintChars)) then
+            table.insert(keyPressedStack, char)
+            hs.alert.closeAll()
+            local keyPressedString = ""
+            -- table to string
+            for k, v in pairs(keyPressedStack) do
+                keyPressedString = keyPressedString .. v
+            end
+            
+            local hintsToCoordsFiltered = {}
+            local hintsToCoordsFilteredCount = 0
+            for k, v in pairs(hintsToCoords) do
+                if (k:match("^" .. string.upper(keyPressedString) .. '(.*)$')) then
+                    hintsToCoordsFiltered[k] = v
+                    hintsToCoordsFilteredCount = hintsToCoordsFilteredCount + 1
+                    -- print(hintsToCoordsFilteredCount)
+                end
+            end
+            --
+            if(hintsToCoordsFilteredCount == 1 and hintsToCoords[string.upper(keyPressedString)]) then
+                -- print(keyPressedString, dump(hintsToCoords[string.upper(keyPressedString)]))
+                -- click here
+                
+                -- hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseDown"], point):setProperty(clickState, 2):post()
+                -- hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseUp"], point):setProperty(clickState, 2):post()
+                -- imageOnScreen:hide()
+                keyPressedStack = {}
+                tap:stop()
+                a:hide()
+                a:delete()
+                a = nil
+                offsetX = 0
+                offsetY = 0
+                if(exitTap) then
+                    exitTap:stop()
+                end
+                
+                local point = hintsToCoords[string.upper(keyPressedString)]
+                local clickState = hs.eventtap.event.properties.mouseEventClickState
+                hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseDown"], point):setProperty(clickState, 1):post()
+                hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseUp"], point):setProperty(clickState, 1):post()
+                -- hs.timer.usleep(10000)
+            end
+            hs.alert.show(keyPressedString)
         end
         
         return true;
