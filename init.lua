@@ -6,8 +6,9 @@ vim = hs.loadSpoon('VimMode')
 local vimouse = require('vimouse')
 vimouse('cmd', 'm')
 
-local maw = require('maw')
-maw('cmd', 'j')
+-- https://github.com/andrewvmail/hammerspoon-GridMouse
+local gridmouse = require('gridmouse')
+gridmouse('cmd', 'i')
 
 
 hs.hotkey.bind({'ctrl'}, '\\', function()
