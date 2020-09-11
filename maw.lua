@@ -20,6 +20,10 @@ local hintOpt =
 local keyPressedStack = {}
 local hintsToCoords = {}
 
+local screens = hs.screen.allScreens()
+local offsetX = 0
+local offsetY = 0
+
 function dump(o)
     if type(o) == 'table' then
         local s = '{ '
@@ -123,10 +127,6 @@ function listDiagCoordsToTable(listDiagCoords)
     return listDiagCoordsTable
 end
 
-screens = hs.screen.allScreens()
-offsetX = 0
-offsetY = 0
-
 return function(tmod, tkey)
     
     local eventTypes = hs.eventtap.event.types
@@ -204,16 +204,24 @@ return function(tmod, tkey)
                 a:hide()
                 a:delete()
                 a = nil
-                offsetX = 0
-                offsetY = 0
                 if(exitTap) then
                     exitTap:stop()
                 end
                 
-                local point = hintsToCoords[string.upper(keyPressedString)]
-                local clickState = hs.eventtap.event.properties.mouseEventClickState
-                hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseDown"], point):setProperty(clickState, 1):post()
-                hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseUp"], point):setProperty(clickState, 1):post()
+                function click()
+                    local point = hintsToCoords[string.upper(keyPressedString)]
+                    point["x"] = point["x"] + offsetX
+                    point["y"] = point["y"] + offsetY
+                    local clickState = hs.eventtap.event.properties.mouseEventClickState
+                    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseDown"], point):setProperty(clickState, 1):post()
+                    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseUp"], point):setProperty(clickState, 1):post()
+                end
+                
+                click()
+                
+                offsetX = 0
+                offsetY = 0
+                
                 -- hs.timer.usleep(10000)
             end
             hs.alert.show(keyPressedString)
