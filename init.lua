@@ -1,3 +1,4 @@
+require "machine-specific"
 require "preload"
 require "ctrlTap"
 
@@ -8,8 +9,10 @@ vimouse('cmd', 'm')
 
 -- https://github.com/andrewvmail/hammerspoon-GridMouse
 local gridmouse = require('gridmouse')
-gridmouse('cmd', 'i')
-
+gWidth = gWidth or 20 
+gHeight = gHeight or 10 
+print(gWidth, gHeight)
+gridmouse('cmd', 'i', gWidth, gHeight)
 
 hs.hotkey.bind({'ctrl'}, '\\', function()
   vim:enter()

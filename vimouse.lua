@@ -76,12 +76,14 @@ return function(tmod, tkey)
 
       local now = hs.timer.secondsSinceEpoch()
       if now - mousepress_time > hs.eventtap.doubleClickInterval() then
+        print('dbl click')
         mousepress = 1
       end
 
       if event:getType() == eventTypes.keyUp then
         dragging = false
         postEvent(eventTypes[btn..'MouseUp'], coords, flags, mousepress)
+        print(dump(mousepress))
       elseif event:getType() == eventTypes.keyDown then
         dragging = true
         if now - mousedown_time <= 0.3 then
@@ -90,6 +92,7 @@ return function(tmod, tkey)
         end
 
         mousedown_time = hs.timer.secondsSinceEpoch()
+        print('run...', flags, mousepress, dump(flags))
         postEvent(eventTypes[btn..'MouseDown'], coords, flags, mousepress)
       end
 
