@@ -136,6 +136,10 @@ hyper:bind({}, "x", function()
   hs.application.launchOrFocus("Xcode")
   hyper.triggered = true 
 end)
+hyper:bind({}, "k", function() 
+  hs.application.launchOrFocus("Keyboard Maestro")
+  hyper.triggered = true 
+end)
 -- open console
 hyper:bind({}, "`", function() 
   hs.application.find("DevTools"):focus()
