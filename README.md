@@ -7,3 +7,6 @@ Using Karabiner remap these keys:
 * f2 -> left_alt
 * f3 -> left_command
 * application -> f19
+
+
+git submodule update --init --recursive.
