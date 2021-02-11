@@ -146,6 +146,10 @@ hyper:bind({}, "`", function()
   hyper.triggered = true 
 end)
 
+hyper:bind({}, 'n', function()
+  local shell_command = "open http://calendar.google.com" 
+  hs.execute(shell_command)
+end)
 -- hyper:bind({}, "esc", function() 
 --   hs.eventtap.keyStroke({}, 'ESCAPE')
 --   hyper.triggered = true 
