@@ -1,6 +1,6 @@
 require "machine-specific"
 require "preload"
-require "ctrlTap"
+-- require "ctrlTap"
 
 vim = hs.loadSpoon('VimMode')
 

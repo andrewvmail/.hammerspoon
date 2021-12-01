@@ -1,12 +1,5 @@
 Using Karabiner remap these keys:
-* esc -> f20
-* left_control -> f18
-* right_command -> f19
-* right_option -> f19
-* f1 -> left_control
-* f2 -> left_alt
-* f3 -> left_command
-* application -> f19
+* esc -> ~ (tilde) on 60% kb
 
 
-git submodule update --init --recursive.
+``` git submodule update --init --recursive. ```
