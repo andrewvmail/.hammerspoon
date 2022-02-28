@@ -1,7 +1,8 @@
 Using Karabiner remap these keys:
-* esc -> ~ (tilde) on 60% kb
 * caps -> left_control
 * left_control -> esc
+* right_command -> f19
+* right_option -> f20
 
 
 ``` git submodule update --init --recursive. ```
