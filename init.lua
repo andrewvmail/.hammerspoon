@@ -18,6 +18,9 @@ rightCommand:bind({}, 'm', nil, function()
     local focused = hs.window.focusedWindow()
     hs.layout.apply({ {nil, focused, focused:screen(), hs.layout.maximized, 0, 0} })
 end)
+rightCommand:bind({}, 'f', nil, function()
+  hs.window.focusedWindow():centerOnScreen()
+end)
 ----
 
 -- rightOption setup
