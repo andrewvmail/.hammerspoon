@@ -8,24 +8,6 @@ local hotswitchHs = require("hotswitch-hs/hotswitch-hs")
 hotswitchHs.enableAutoUpdate() -- If you don't want to update automatically, remove this line.
 hs.hotkey.bind({"command"}, ".", hotswitchHs.openOrClose) -- Set a keybind you like to open HotSwitch-HS panel.
 
--- vim mode in non vim apps
-vim = hs.loadSpoon('VimMode')
-hs.hotkey.bind({'ctrl'}, '\\', function()
-  vim:enter()
-  hs.alert("vim enter")
-end)
-hs.hotkey.bind({'ctrl'}, '/', function()
-  vim:exit()
-  hs.alert("vim ")
-end)
--- vim:disableForApp('Code')
--- vim:disableForApp('iTerm')
--- vim:disableForApp('MacVim')
--- vim:disableForApp('Terminal')
--- vim:disableForApp('Chrome')
-
-
-
 -- rightCommand setup
 rightCommand = hs.hotkey.modal.new({}, nil)
 rightCommand.pressed = function() rightCommand:enter() end
@@ -102,6 +84,9 @@ end)
 -- open console
 rightOption:bind({}, "`", function() 
   hs.application.find("DevTools"):focus()
+end)
+rightOption:bind({}, "e", function() 
+  hs.window.find("Document"):focus()
 end)
 
 rightOption:bind({}, 'n', function()
