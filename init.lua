@@ -107,9 +107,7 @@ end
 -- search highlighted text with google
 --
 rightOption:bind({}, '/', function()
-  hs.eventtap.keyStroke({"cmd"}, 'c')
-  local shell_command = "open http://google.com/search?q=" .. hs.pasteboard.readString() 
-  hs.execute(shell_command)
+  copyToGoogle()
 end)
 eventtapOtherMouseDown = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown, hs.eventtap.event.types.otherMouseUp }, function(event)
     if (event:getType() == hs.eventtap.event.types.otherMouseDown) then
