@@ -97,11 +97,22 @@ rightOption:bind({}, 'n', function()
   hs.execute(shell_command)
 end)
 
+
+function string.starts(String,Start)
+   return string.sub(String,1,string.len(Start))==Start
+end
+
 function copyToGoogle()
   hs.eventtap.keyStroke({"cmd"}, 'c')
   hs.timer.delayed.new(0.1,function()  
-    local shell_command = "open http://google.com/search?q=" .. hs.pasteboard.readString() 
-    hs.execute(shell_command)
+    copiedString = hs.pasteboard.readString();
+    if string.starts(copiedString, "http") then
+      local shell_command = "open " ..  copiedString
+      hs.execute(shell_command)
+    else 
+      local shell_command = "open http://google.com/search?q=" .. copiedString
+      hs.execute(shell_command)
+    end
   end):start()
 end
 
