@@ -96,6 +96,32 @@ rightOption:bind({}, 'n', function()
   local shell_command = "open http://calendar.google.com" 
   hs.execute(shell_command)
 end)
+
+function copyToGoogle()
+  hs.eventtap.keyStroke({"cmd"}, 'c')
+  local shell_command = "open http://google.com/search?q=" .. hs.pasteboard.readString() 
+  hs.execute(shell_command)
+end
+
+--
+-- search highlighted text with google
+--
+rightOption:bind({}, '/', function()
+  hs.eventtap.keyStroke({"cmd"}, 'c')
+  local shell_command = "open http://google.com/search?q=" .. hs.pasteboard.readString() 
+  hs.execute(shell_command)
+end)
+eventtapOtherMouseDown = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown, hs.eventtap.event.types.otherMouseUp }, function(event)
+    if (event:getType() == hs.eventtap.event.types.otherMouseDown) then
+      copyToGoogle()
+      return true
+    else
+      return true
+    end
+    return false -- shouldn't ever reach here, but just in case
+end):start()
+
+
 -- hyper:bind({}, "esc", function() 
 --   hs.eventtap.keyStroke({}, 'ESCAPE')
 --   hyper.triggered = true 
