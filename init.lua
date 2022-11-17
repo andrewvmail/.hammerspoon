@@ -123,10 +123,9 @@ rightOption:bind({}, '/', function()
   copyToGoogle()
 end)
 eventtapOtherMouseDown = hs.eventtap.new({ hs.eventtap.event.types.otherMouseDown, hs.eventtap.event.types.otherMouseUp }, function(event)
-    if (event:getType() == hs.eventtap.event.types.otherMouseDown) then
+    local mouseButton = event:getProperty(hs.eventtap.event.properties['mouseEventButtonNumber'])
+    if (event:getType() == hs.eventtap.event.types.otherMouseDown and mouseButton == 2) then
       copyToGoogle()
-      return true
-    else
       return true
     end
     return false -- shouldn't ever reach here, but just in case
