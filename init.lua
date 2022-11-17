@@ -99,8 +99,10 @@ end)
 
 function copyToGoogle()
   hs.eventtap.keyStroke({"cmd"}, 'c')
-  local shell_command = "open http://google.com/search?q=" .. hs.pasteboard.readString() 
-  hs.execute(shell_command)
+  hs.timer.delayed.new(0.1,function()  
+    local shell_command = "open http://google.com/search?q=" .. hs.pasteboard.readString() 
+    hs.execute(shell_command)
+  end):start()
 end
 
 --
