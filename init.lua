@@ -1,7 +1,28 @@
+require "hs.ipc"
 require "preload"
-
--- window resizer
 require "window" 
+
+
+WIDTH=hs.screen.primaryScreen():currentMode().w
+HEIGHT=hs.screen.primaryScreen():currentMode().h
+THIRD_WIDTH=WIDTH/3
+
+local localLayouts = {
+  [1] = { 0, 0 },
+  [2] = { ['x'] = THIRD_WIDTH , ["y"] = 0 },
+  [3] = { ['x'] = THIRD_WIDTH * 2, ["y"] = 0 },
+}
+
+local lastLayoutIndex = 1 
+
+function nextLayout()
+  local nextPoint = 0 + THIRD_WIDTH
+  hs.window.focusedWindow():moveToUnit('[0,0 33,100]')
+  hs.window.focusedWindow():move(localLayouts[lastLayoutIndex])
+  lastLayoutIndex = lastLayoutIndex + 1
+  if lastLayoutIndex > #localLayouts then lastLayoutIndex = 1 end
+end
+
 
 -- https://github.com/oniatsu/HotSwitch-HS
 local hotswitchHs = require("hotswitch-hs/hotswitch-hs")
